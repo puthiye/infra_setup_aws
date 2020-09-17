@@ -1,3 +1,7 @@
+provider "aws" {
+  region = "ap-southeast-2"
+}
+
 data "aws_availability_zones" "all" {}
 
 resource "aws_launch_configuration" "asg-launch-config-sample" {
