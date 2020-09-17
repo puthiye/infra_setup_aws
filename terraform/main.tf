@@ -5,8 +5,8 @@ provider "aws" {
 data "aws_availability_zones" "all" {}
 
 resource "aws_launch_configuration" "asg-launch-config-sample" {
-  image_id          = "ami-07ebfd5b3428b6f4d"
-  instance_type = "t2.nano"
+  image_id          = "ami-0810abbfb78d37cdf"
+  instance_type = "t2.micro"
   security_groups = [aws_security_group.busybox.id]
   
   user_data = <<-EOF
