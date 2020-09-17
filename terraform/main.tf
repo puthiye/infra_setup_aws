@@ -2,7 +2,15 @@ provider "aws" {
   region = "ap-southeast-2"
 }
 
-data "aws_availability_zones" "all" {}
+resource "aws_default_vpc" "default" {
+}
+
+resource "aws_default_subnet" "default" {
+  availability_zone = "ap-southeast-2a"
+  tags = {
+    Name = "Default subnet for us-west-2a"
+  }
+}
 
 resource "aws_launch_configuration" "launch-config-sample" {
   image_id          = "ami-0810abbfb78d37cdf"
@@ -34,7 +42,7 @@ resource "aws_security_group" "elb-sg-sample" {
 
 resource "aws_autoscaling_group" "asg-sample" {
   launch_configuration = aws_launch_configuration.launch-config-sample.id
-  availability_zones   = data.aws_availability_zones.all.names
+  vpc_zone_identifier  = [aws_default_subnet.default.id] 
   min_size = 1
   max_size = 2
   desired_capacity = 1
@@ -52,8 +60,7 @@ resource "aws_autoscaling_group" "asg-sample" {
 resource "aws_elb" "elb-sample" {
   name               = "elb-demo"
   security_groups    = [aws_security_group.elb-sg-sample.id]
-  availability_zones = data.aws_availability_zones.all.names
-  
+  subnets            = [aws_default_subnet.default.id]
   health_check {
     healthy_threshold   = 2
     unhealthy_threshold = 2
@@ -69,4 +76,4 @@ resource "aws_elb" "elb-sample" {
     instance_protocol = "tcp"
     lb_protocol       = "tcp"
   }
-}    
+} 
