@@ -65,6 +65,8 @@ resource "aws_elb" "elb-sample" {
   # Adding a listener for SSH 
   listener {
     lb_port           = var.elb_port
+    instance_port     = var.elb_port
+    instance_protocol = "tcp"
     lb_protocol       = "tcp"
   }
 }    
