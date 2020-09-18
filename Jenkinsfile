@@ -1,7 +1,7 @@
 #!/usr/bin/env groovy
 
 def DEPLOY_ENDPOINT 
-def skipBuild = 'false'
+def skipBuild = false
 
 pipeline { 
 agent any
@@ -31,7 +31,7 @@ agent any
                                            }  
                                             
                                            if ("${ACTION}".equals('destroy'))
-                                              skipBuild = 'true'
+                                              skipBuild = true
                                             
                                            result = sh(returnStdout: true, script: "AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} \
                                                            AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} \
@@ -52,7 +52,7 @@ agent any
          stage("install docker/git - rhel") {
                  
             when {
-                    expression { skipBuild == 'true' }
+                    expression { skipBuild == true }
              }    
                
             steps{
