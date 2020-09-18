@@ -51,6 +51,7 @@ agent any
 
 
          stage("install docker/git - rhel") {
+            agent any     
                  
             when {
                     expression { return skipBuild == 'TRUE'; }
