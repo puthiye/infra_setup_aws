@@ -52,7 +52,7 @@ agent any
          stage("install docker/git - rhel") {
                  
             when {
-                    expression { return { skipBuild == false };}
+                    expression { return { skipBuild == true };}
              }    
                
             steps{
