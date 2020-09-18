@@ -26,8 +26,8 @@ agent any
                                             
                                            dir('terraform')
                                            {
-                                               sh "terraform init" 
-                                               sh "terraform ${ACTION} -auto-approve=true"      
+                                          //     sh "terraform init" 
+                                           //    sh "terraform ${ACTION} -auto-approve=true"      
                                            }  
                                             
                                            if ("${ACTION}".equals('destroy'))
@@ -52,7 +52,7 @@ agent any
          stage("install docker/git - rhel") {
                  
             when {
-                    expression { skipBuild == true }
+                    expression { return skipBuild == true ;}
              }    
                
             steps{
