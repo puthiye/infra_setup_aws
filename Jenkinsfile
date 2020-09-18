@@ -5,13 +5,6 @@ def DEPLOY_ENDPOINT
 pipeline { 
 agent any
 
-    parameters {
-        choice(
-            choices: ['apply' , 'destroy'],
-            description: '',
-            name: 'ACTION')
-    }        
-
         stages {
 
                  stage("infra setup") {
@@ -35,6 +28,9 @@ agent any
                                                sh "terraform init" 
                                                sh "terraform ${ACTION} -auto-approve=true"      
                                            }  
+                                        
+                                           if "${ACTION}".equals( 'destroy' )
+                                              skipBuild = true
                
                                            result = sh(returnStdout: true, script: "AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} \
                                                            AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} \
@@ -55,7 +51,7 @@ agent any
          stage("install docker/git - rhel") {
                  
              when {
-                    expression { params.ACTION != 'destroy' }
+                    expression { skipBuild == 'true' }
              }    
 
             steps{
