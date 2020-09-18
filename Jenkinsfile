@@ -4,6 +4,13 @@ def DEPLOY_ENDPOINT
 
 pipeline { 
 agent any
+        
+    parameters {
+        choice(
+            choices: ['apply' , 'destroy'],
+            description: '',
+            name: 'ACTION')
+    }
 
         stages {
 
@@ -28,14 +35,7 @@ agent any
                                               sh "terraform init" 
                                               sh "terraform ${ACTION} -auto-approve=true"      
                                            }  
-                                                                                                                
-                                           result = sh(returnStdout: true, script: "AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} \
-                                                           AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} \
-                                                           AWS_REGION=ap-southeast-2 \
-                                                           /usr/local/bin/aws ec2 describe-instances --filters \"Name=tag:Name,Values=demo-asg\" | grep PublicIpAddress") 
-                        
-                                           DEPLOY_ENDPOINT = "${result}".tokenize(':')[1].minus(",")
-                                           println("EC2 public ip=${DEPLOY_ENDPOINT}")  
+       
                                                                                
                                     }
        
@@ -45,7 +45,44 @@ agent any
           }
 
 
+         stage("retrieve ec2 public ip ) {
+               
+                when {
+                       expression { params.ACTION == 'apply' }
+                }
+
+                  steps{
+
+                           script{
+  
+                                    //credentials -> aws credentials
+                                    withCredentials(
+                                    [[
+                                         $class: 'AmazonWebServicesCredentialsBinding',
+                                         accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+                                         credentialsId: 'AWS_CLI',  
+                                         secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
+                                   ]]) {
+                                            
+                                                    result = sh(returnStdout: true, script: "AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} \
+                                                           AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} \
+                                                           AWS_REGION=ap-southeast-2 \
+                                                           /usr/local/bin/aws ec2 describe-instances --filters \"Name=tag:Name,Values=demo-asg\" | grep PublicIpAddress") 
+                        
+                                                           DEPLOY_ENDPOINT = "${result}".tokenize(':')[1].minus(",")
+                                                           println("EC2 public ip=${DEPLOY_ENDPOINT}")  
+                                    }
+                           }
+                  }
+         }
+                
+                
          stage("install docker/git - rhel") {
+                 
+            when {
+                       expression { params.ACTION == 'apply' }
+                }
+     
                          
             steps{
 
