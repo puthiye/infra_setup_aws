@@ -1,8 +1,6 @@
 #!/usr/bin/env groovy
 
-skipBuild = ''
 def DEPLOY_ENDPOINT 
-
 
 pipeline { 
 agent any
@@ -27,13 +25,10 @@ agent any
                                             
                                            dir('terraform')
                                            {
-                                          //     sh "terraform init" 
-                                           //    sh "terraform ${ACTION} -auto-approve=true"      
+                                              sh "terraform init" 
+                                              sh "terraform ${ACTION} -auto-approve=true"      
                                            }  
-                                            
-                                           if ("${ACTION}".equals('destroy'))
-                                              skipBuild = "TRUE"
-                                            
+                                                                                                                
                                            result = sh(returnStdout: true, script: "AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} \
                                                            AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} \
                                                            AWS_REGION=ap-southeast-2 \
@@ -51,12 +46,7 @@ agent any
 
 
          stage("install docker/git - rhel") {
-            agent any     
-                 
-            when {
-                    expression { return skipBuild == 'TRUE'; }
-             }    
-               
+                         
             steps{
 
                 script{
