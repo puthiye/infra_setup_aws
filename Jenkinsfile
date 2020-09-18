@@ -35,9 +35,7 @@ agent any
                                                sh "terraform init" 
                                                sh "terraform ${ACTION} -auto-approve=true"      
                                            }  
-                                            
-                                            if "${ACTION}".matches 
-                                                       
+               
                                            result = sh(returnStdout: true, script: "AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} \
                                                            AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} \
                                                            AWS_REGION=ap-southeast-2 \
