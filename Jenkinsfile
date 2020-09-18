@@ -24,7 +24,7 @@ agent any
                                            dir('terraform')
                                            {
                                                sh "terraform init" 
-                                               sh "terraform apply -input=false"      
+                                               sh "terraform apply -auto-approve=true"      
                                            }  
                                                        
                                           DEPLOY_ENDPOINT = sh(returnStdout: true, script: "AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} \
