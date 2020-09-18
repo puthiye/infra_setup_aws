@@ -45,7 +45,7 @@ agent any
           }
 
 
-         stage("retrieve ec2 public ip ) {
+         stage("retrieve ec2 public ip") {
                
                 when {
                        expression { params.ACTION == 'apply' }
