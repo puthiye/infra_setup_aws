@@ -23,11 +23,11 @@ agent any
                                    ]]) {
                                             
                                             
-                                        //   dir('terraform')
-                                        //   {
-                                       //        sh "terraform init" 
-                                        //       sh "terraform apply -auto-approve=true"      
-                                        //   }  
+                                           dir('terraform')
+                                           {
+                                               sh "terraform init" 
+                                               sh "terraform apply -auto-approve=true"      
+                                           }  
                                                        
                                            result = sh(returnStdout: true, script: "AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} \
                                                            AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} \
