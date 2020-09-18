@@ -54,7 +54,9 @@ agent any
 
          stage("install docker/git - rhel") {
                  
-            when {  expression { params.ACTION == 'apply' }}      
+             when {
+                    expression { params.ACTION != 'destroy' }
+             }    
 
             steps{
 
