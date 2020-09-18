@@ -36,15 +36,13 @@ agent any
                         
                                            DEPLOY_ENDPOINT = "${result}".tokenize(':')[1].minus(",")
                                            println("ip=${DEPLOY_ENDPOINT}")  
-                                    
+                                                                               
                                     }
-      
-      
-                                    
+       
 
                            }
                   }
-               }
+          }
 
 
          stage("install docker/git - rhel") {
@@ -61,15 +59,12 @@ agent any
                                               chmod 700 /tmp/key.file
                                               '''
                           }
-                    
-                    
-                    
-                        println("ip here =${DEPLOY_ENDPOINT}")  
-                           
-                                  sh """ ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i \"${DEPLOY_ENDPOINT}\", ./ansible/setup.yml --extra-vars="ansible_ssh_private_key_file=/tmp/key.file ansible_user=ec2-user" """
-                       
-                       
-                       
+          
+                        //wait for ssh to come up
+                        sleep(60)
+                        
+                        sh """ ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i \"${DEPLOY_ENDPOINT}\", ./ansible/setup.yml --extra-vars="ansible_ssh_private_key_file=/tmp/key.file ansible_user=ec2-user" """
+    
                          //delete the ssh key after use
                          dir("/tmp/key.file") {
                               deleteDir()
