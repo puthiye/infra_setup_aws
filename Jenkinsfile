@@ -28,14 +28,14 @@ agent any
                                                sh "terraform init" 
                                                sh "terraform apply -auto-approve=true"      
                                            }  
-                                                       
+                                            
                                            DEPLOY_ENDPOINT = sh(returnStdout: true, script: "AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} \
-                                                                AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} \
-                                                                AWS_REGION=ap-southeast-2 \
-                                                                /usr/local/bin/aws ec2 describe-instances --filters \"Name=tag:Name,Values=demo-asg\" --query \"Reservations[*].Instances[*].[PublicIpAddress]\"  --output text")
+                                                                  AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} \
+                                                                  AWS_REGION=ap-southeast-2 \
+                                                                   /usr/local/bin/aws ec2 describe-instances --filters \"Name=tag:Name,Values=demo-asg\" --query \"Reservations[*].Instances[*].[PublicIpAddress]\"  --output text")
                                  
-                                            println("ip=${DEPLOY_ENDPOINT}")
-                                    
+                                           println("ip=${DEPLOY_ENDPOINT}")               
+                                        
                                     }
       
 
