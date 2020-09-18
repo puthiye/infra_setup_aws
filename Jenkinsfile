@@ -1,5 +1,7 @@
 #!/usr/bin/env groovy
 
+def DEPLOY_ENDPOINT
+
 pipeline { 
 agent any
 
@@ -32,7 +34,7 @@ agent any
                                                                 AWS_REGION=ap-southeast-2 \
                                                                 /usr/local/bin/aws ec2 describe-instances --filters \"Name=tag:Name,Values=demo-asg\" --query \"Reservations[*].Instances[*].[PublicIpAddress]\"  --output text")
                                  
-                                            println("EC2 instance public ip=${DEPLOY_ENDPOINT}")
+                                            println("ip=${DEPLOY_ENDPOINT}")
                                     
                                     }
       
