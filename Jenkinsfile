@@ -19,6 +19,14 @@ agent any
                                          credentialsId: 'AWS_CLI',  
                                          secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
                                    ]]) {
+                                            
+                                            
+                                            
+                                            
+                                          sh "terraform init"  
+                                          sh "terraform apply -input=false"  
+                                            
+                                            
                                                     
                                           DEPLOY_ENDPOINT = sh(returnStdout: true, script: "AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} \
                                                                AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} \
