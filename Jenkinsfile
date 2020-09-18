@@ -32,7 +32,7 @@ agent any
                                            }  
                                             
                                            if ("${ACTION}".equals('destroy'))
-                                              skipBuild = 'true'
+                                              skipBuild = "TRUE"
                                             
                                            result = sh(returnStdout: true, script: "AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} \
                                                            AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} \
@@ -53,7 +53,7 @@ agent any
          stage("install docker/git - rhel") {
                  
             when {
-                    expression { return skipBuild == 'true'; }
+                    expression { return skipBuild == 'TRUE'; }
              }    
                
             steps{
