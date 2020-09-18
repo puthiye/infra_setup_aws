@@ -28,10 +28,7 @@ agent any
                                                sh "terraform init" 
                                                sh "terraform ${ACTION} -auto-approve=true"      
                                            }  
-                                        
-                                            if ("${ACTION}".equals('destroy'))
-                                              skipBuild = true
-               
+                 
                                            result = sh(returnStdout: true, script: "AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} \
                                                            AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} \
                                                            AWS_REGION=ap-southeast-2 \
@@ -49,11 +46,7 @@ agent any
 
 
          stage("install docker/git - rhel") {
-                 
-             when {
-                    expression { skipBuild == 'true' }
-             }    
-
+               
             steps{
 
                 script{
