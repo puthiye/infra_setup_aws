@@ -8,7 +8,7 @@ resource "aws_default_vpc" "default" {
 resource "aws_default_subnet" "default" {
   availability_zone = "ap-southeast-2a"
   tags = {
-    Name = "Default subnet for us-west-2a"
+    Name = "Default subnet"
   }
 }
 
@@ -16,6 +16,7 @@ resource "aws_launch_configuration" "launch-config-sample" {
   image_id          = "ami-0810abbfb78d37cdf"
   instance_type = "t2.micro"
   security_groups = [aws_security_group.elb-sg-sample.id]
+  key_name = "key0"
    
   lifecycle {
     create_before_destroy = true
@@ -76,4 +77,5 @@ resource "aws_elb" "elb-sample" {
     instance_protocol = "tcp"
     lb_protocol       = "tcp"
   }
-} 
+
+}
