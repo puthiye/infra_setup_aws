@@ -29,7 +29,7 @@ agent any
                                                sh "terraform ${ACTION} -auto-approve=true"      
                                            }  
                                         
-                                           if "${ACTION}".equals( 'destroy' )
+                                           if ${ACTION}.equals( 'destroy' )
                                               skipBuild = true
                
                                            result = sh(returnStdout: true, script: "AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} \
