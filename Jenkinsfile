@@ -35,7 +35,7 @@ agent any
                                                            /usr/local/bin/aws ec2 describe-instances --filters \"Name=tag:Name,Values=demo-asg\" | grep PublicIpAddress") 
                         
                                            DEPLOY_ENDPOINT = "${result}".tokenize(':')[1].minus(",")
-                                           println("ip=${DEPLOY_ENDPOINT}")  
+                                           println("EC2 public ip=${DEPLOY_ENDPOINT}")  
                                                                                
                                     }
        
@@ -52,23 +52,13 @@ agent any
                 script{
                           
                           //credentials -> secret file 
-                          withCredentials([file(credentialsId: 'SSH-PRIVATE-KEY', variable: 'mySecretFile')]) {
+                          withCredentials([file(credentialsId: 'SSH-PRIVATE-KEY', variable: 'mySecret')]) {
     
-                                           sh '''
-                                              echo "Copy the content to /tmp location `cat $mySecretFile > /tmp/key.file`"
-                                              chmod 700 /tmp/key.file
-                                              '''
+                                     //wait for ssh to come up
+                                     sleep(60)
+                                     sh """ ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i \"${DEPLOY_ENDPOINT}\", ./ansible/setup.yml --private-key \"${mySecret}\" --extra-vars="ansible_user=ec2-user" """  
                           }
-          
-                        //wait for ssh to come up
-                        sleep(60)
-                        
-                        sh """ ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i \"${DEPLOY_ENDPOINT}\", ./ansible/setup.yml --extra-vars="ansible_ssh_private_key_file=/tmp/key.file ansible_user=ec2-user" """
-    
-                         //delete the ssh key after use
-                         dir("/tmp/key.file") {
-                              deleteDir()
-                         }      
+                              
 
                       }                   
 
