@@ -26,7 +26,7 @@ agent any
                                            dir('terraform')
                                            {
                                                sh "terraform init" 
-                                               sh "terraform apply -auto-approve=true"      
+                                               sh "terraform ${ACTION} -auto-approve=true"      
                                            }  
                                                        
                                            result = sh(returnStdout: true, script: "AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} \
@@ -46,6 +46,8 @@ agent any
 
 
          stage("install docker/git - rhel") {
+                 
+            when { expression {return "${ACTION}" != 'destroy'; }      
 
             steps{
 
