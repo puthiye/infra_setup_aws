@@ -62,6 +62,7 @@ resource "aws_elb" "elb-sample" {
   name               = "elb-demo"
   security_groups    = [aws_security_group.elb-sg-sample.id]
   subnets            = [aws_default_subnet.default.id]
+  load_balancer_type = "application"
   health_check {
     healthy_threshold   = 2
     unhealthy_threshold = 2
