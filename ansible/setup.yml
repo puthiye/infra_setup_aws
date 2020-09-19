@@ -3,6 +3,10 @@
   become: true
   hosts: all
   tasks: 
+    - name: Wait 10 seconds
+      wait_for_connection:
+        timeout: 10
+  
     - 
       name: "Installing Docker Prerequisite packages on RHEL"
       with_items: 
