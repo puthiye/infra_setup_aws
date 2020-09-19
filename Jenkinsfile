@@ -92,7 +92,7 @@ agent any
                           withCredentials([file(credentialsId: 'SSH-PRIVATE-KEY', variable: 'mySecret')]) {
     
                                      //wait for ssh to come up
-                                     sleep(60)
+                                     //sleep(60)
                                      sh """ ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i \"${DEPLOY_ENDPOINT}\", ./ansible/setup.yml --private-key \"${mySecret}\" --extra-vars="ansible_user=ec2-user" """  
                           }
                               
